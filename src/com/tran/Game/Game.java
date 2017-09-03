@@ -1,12 +1,12 @@
 package com.tran.Game;
 
+import com.tran.IO.Input;
 import com.tran.display.Display;
 import com.tran.utils.Time;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
-import static java.awt.Color.white;
-import static java.awt.SystemColor.window;
 
 public class Game implements Runnable {
     public static final int WIDTH = 800;
@@ -23,6 +23,7 @@ public class Game implements Runnable {
     private boolean running;
     private Thread gameThread;
     private Graphics2D graphics;
+    private Input input;
 
     //temp
 
@@ -30,6 +31,7 @@ public class Game implements Runnable {
     float y = 350;
     float delta = 0;
     float radius = 50;
+    float speed = 3;
 
     //temp end
     public Game() {
@@ -38,6 +40,8 @@ public class Game implements Runnable {
 
         Display.create(WIDTH, HEGHT, TITLE, CLEAR_COLOR, NUM_BUFFERS);
         graphics = Display.getGraphics();
+        input = new Input();
+        Display.addInputListener(input);
 
     }
 
@@ -75,7 +79,22 @@ public class Game implements Runnable {
 
     private void update() {
 
-        delta += 0.02f;
+        if (input.getKey(KeyEvent.VK_UP)) {
+
+            y -= speed;
+        }
+        if (input.getKey(KeyEvent.VK_DOWN)) {
+
+            y += speed;
+        }
+        if (input.getKey(KeyEvent.VK_LEFT)) {
+
+            x -= speed;
+        }
+        if (input.getKey(KeyEvent.VK_RIGHT)) {
+
+            x += speed;
+        }
 
 
     }

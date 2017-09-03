@@ -1,5 +1,7 @@
 package com.tran.display;
 
+import com.tran.IO.Input;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -89,5 +91,9 @@ private  static BufferStrategy bufferStrategy;
     public static void setTitle(String title){
         window.setTitle(title);
 
+    }
+
+    public  static void  addInputListener(Input inputListener){
+        window.add(inputListener);
     }
 }
