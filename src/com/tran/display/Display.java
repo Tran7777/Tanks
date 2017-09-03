@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.util.Arrays;
 
+import static java.awt.SystemColor.window;
+
 //класс для создания окна (рамка и  лист) в любой момет времени существует только
 //одно окно
 public abstract class Display {
@@ -21,11 +23,7 @@ public abstract class Display {
     private static int clearColor ;
 
 private  static BufferStrategy bufferStrategy;
-//temp
-    private static float delta = 0 ;
 
-
-    //temp end
     public static  void create(int width, int height, String title, int _clearColor, int numBuffers){
 
         if(created)//если окно уже созданно то не создаем новое
@@ -49,6 +47,7 @@ private  static BufferStrategy bufferStrategy;
         buffer = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         bufferData = ((DataBufferInt)buffer.getRaster().getDataBuffer()).getData();
         bufferGraphics = buffer.getGraphics();
+        ((Graphics2D)bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         clearColor = _clearColor;
 
 
@@ -65,19 +64,6 @@ private  static BufferStrategy bufferStrategy;
 
     }
 
-    public static void render(){
-
-        bufferGraphics.setColor(new Color(0xff0000ff));
-
-        bufferGraphics.fillOval((int)(350+ Math.sin(delta)*200), 250 , 100,100);
-
-        ((Graphics2D)bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        bufferGraphics.fillOval((int)(500+ Math.sin(delta)*200), 250 , 100,100);
-
-        ((Graphics2D)bufferGraphics).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-
-        delta+=0.02f;
-    }
 
     public static void swapBuffers(){
         Graphics g = bufferStrategy.getDrawGraphics();
@@ -85,4 +71,23 @@ private  static BufferStrategy bufferStrategy;
         bufferStrategy.show();
     }
 
+    public static Graphics2D getGraphics(){
+
+        return (Graphics2D) bufferGraphics;
+
+    }
+
+    public static void destroy() {
+        if(!created)
+            return;
+
+        window.dispose();
+
+
+    }
+
+    public static void setTitle(String title){
+        window.setTitle(title);
+
+    }
 }
