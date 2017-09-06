@@ -2,6 +2,9 @@ package com.tran.Game;
 
 import com.tran.IO.Input;
 import com.tran.display.Display;
+import com.tran.graphics.Sprite;
+import com.tran.graphics.SpriteSheet;
+import com.tran.graphics.TextureAtlas;
 import com.tran.utils.Time;
 
 import java.awt.*;
@@ -20,10 +23,16 @@ public class Game implements Runnable {
     public static final float UPDATE_INTERVAL = Time.SECOND / UPDATE_RATE;
     public static final long IDLE_TIME = 1;
 
+    public  static final String ATLAS_FILE_NAME = "texture_atlas.png";
+
     private boolean running;
     private Thread gameThread;
     private Graphics2D graphics;
     private Input input;
+    private TextureAtlas atlas;
+    private SpriteSheet sheet;
+    private Sprite sprite;
+
 
     //temp
 
@@ -42,7 +51,9 @@ public class Game implements Runnable {
         graphics = Display.getGraphics();
         input = new Input();
         Display.addInputListener(input);
-
+        atlas = new TextureAtlas(ATLAS_FILE_NAME);
+        sheet = new SpriteSheet(atlas.cut(1*16 , 9*16, 16 , 16) , 2, 16);
+        sprite = new Sprite(sheet, 1);
     }
 
     public synchronized void start() {
@@ -102,8 +113,7 @@ public class Game implements Runnable {
     private void render() {
 
         Display.clear();
-        graphics.setColor(Color.white);
-        graphics.fillOval((int) (x + Math.sin(delta) * 200), (int) y, (int) radius * 2, (int) radius * 2);
+        sprite.render(graphics , x,y );
         Display.swapBuffers();
 
 
